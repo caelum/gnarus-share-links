@@ -1,0 +1,23 @@
+<ol>
+<% @attempt.exercise.attempts.map{|a| a.executions }.flatten.each do |ex| %>
+	<li><a href="<%=ex.solution %>"><%= ex.solution %></a> 
+		<!--client side.sorry if you are reading this so far. por <a href="http://online.caelum.com.br/profile/<%=ex.attempt.author_id%>"><img src="http://online.caelum.com.br/profile/<%= ex.attempt.author_id %>/thumbnail"/></a>
+		--></li>
+<% end %>
+</ol>
+
+<form id="exercise" method="POST" action="<%= exercise_attempt_executions_url(@attempt.exercise, @attempt)%>">
+	<input name="solution" id="solution" value="" />
+	<input type="button" id="try" value="Verificar">
+	<input type="button" id="skip" value="Ignorar e continuar">
+	</form>
+<script>
+function showResult(r) {
+	$('#result').html(r.suceeded ? "sucesso" : "nao consegui cadastrar seu link");
+}
+function solutionToSend() {
+	return {solution : $('#solution').val()};
+}
+var form = gnarus.attemptForm(solutionToSend, showResult, "<%= @attempt.return_uri %>");
+form.setup($('#try'),$('#skip'));
+</script>
