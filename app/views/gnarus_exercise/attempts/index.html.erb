@@ -1,8 +1,6 @@
 <ol>
-<% @attempt.exercise.attempts.map{|a| a.executions }.flatten.each do |ex| %>
-	<li><a href="<%=ex.solution %>"><%= ex.solution %></a> 
-		<!--client side.sorry if you are reading this so far. por <a href="http://online.caelum.com.br/profile/<%=ex.attempt.author_id%>"><img src="http://online.caelum.com.br/profile/<%= ex.attempt.author_id %>/thumbnail"/></a>
-		--></li>
+<% @attempt.exercise.attempts.map{|a| a.executions}.flatten.each do |ex| %>
+	<li><a href="<%=ex.solution %>"><%= ex.solution %></a></li>
 <% end %>
 </ol>
 
@@ -10,7 +8,7 @@
 	<input name="solution" id="solution" value="" />
 	<input type="button" id="try" value="Verificar">
 	<input type="button" id="skip" value="Ignorar e continuar">
-	</form>
+</form>
 <script>
 function showResult(r) {
 	$('#result').html(r.suceeded ? "sucesso" : "nao consegui cadastrar seu link");
