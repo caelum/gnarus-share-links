@@ -4,18 +4,27 @@
 <% end %>
 </ol>
 
+<div id="result"></div>
 <form id="exercise" method="POST" action="<%= exercise_attempt_executions_url(@attempt.exercise, @attempt)%>">
 	<input name="solution" id="solution" value="" />
 	<input type="button" id="try" value="Verificar">
 	<input type="button" id="skip" value="Ignorar e continuar">
 </form>
+
 <script>
-function showResult(r) {
-	$('#result').html(r.suceeded ? "sucesso" : "nao consegui cadastrar seu link");
-}
-function solutionToSend() {
-	return {solution : $('#solution').val()};
-}
-var form = gnarus.attemptForm(solutionToSend, showResult, "<%= @attempt.return_uri %>");
-form.setup($('#try'),$('#skip'));
+(function(){
+		var return_uri = "<%= @attempt.return_uri %>";
+		var actual_uris = <%= @attempt.exercise.attempts.map{|a| a.executions}.flatten.map{|e| e.solution}.inspect %>; <!-- escapar as aspas -->
+		console.log(actual_uris);
+
+		function showResult(r) {
+			$('#result').html(r.suceeded ? "sucesso" : "nao consegui cadastrar seu link");
+		}
+		function solutionToSend() {
+			var answer = $('#solution').val();
+			return {solution : answer};
+		}
+		var form = gnarus.attemptForm(solutionToSend, showResult, return_uri);
+		form.setup($('#try'),$('#skip'));
+}())
 </script>
