@@ -34,14 +34,14 @@
 		return {solution : link};
 	}
 	var form = gnarus.attemptForm(solutionToSend, showResult, fromServer.returnUri);
-	form.superProcess = form.process;
+	form.originalProcess = form.process;
 	form.process = function() {
 		var link = $('#solution').val();
 		var isARepeatedLink = (fromServer.links.indexOf(link) !== -1);
 		if(isARepeatedLink) {
 			$('#result').html(MESSAGES.repeated);
 		} else {
-			return form.superProcess();
+			return form.originalProcess();
 		}
 	}
 	form.setup($('#try'),$('#skip'));
