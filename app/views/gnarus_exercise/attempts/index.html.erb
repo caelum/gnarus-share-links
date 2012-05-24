@@ -12,19 +12,38 @@
 </form>
 
 <script>
-(function(){
-		var return_uri = "<%= @attempt.return_uri %>";
-		var actual_uris = <%= @attempt.exercise.attempts.map{|a| a.executions}.flatten.map{|e| e.solution}.inspect %>; <!-- escapar as aspas -->
-		console.log(actual_uris);
 
-		function showResult(r) {
-			$('#result').html(r.suceeded ? "sucesso" : "nao consegui cadastrar seu link");
+(function(){
+	var fromServer = {
+		returnUri: "<%= @attempt.return_uri %>",
+		links: <%= raw @attempt.exercise.attempts.map{|a| a.executions}.flatten.map{|e| e.solution}.inspect %>
+	};
+
+	var MESSAGES = {
+		sucess: "Sucesso",
+		error: "Não foi possivel cadastrar seu link.",
+		repeated: "Esse link já foi indicado."
+	}
+
+	function showResult(r) {
+		$('#result').html(r.suceeded ? MESSAGES.sucess : MESSAGE.error);
+	}
+	function solutionToSend() {
+		var link = $('#solution').val();
+
+		return {solution : link};
+	}
+	var form = gnarus.attemptForm(solutionToSend, showResult, fromServer.returnUri);
+	form.superProcess = form.process;
+	form.process = function() {
+		var link = $('#solution').val();
+		var isARepeatedLink = (fromServer.links.indexOf(link) !== -1);
+		if(isARepeatedLink) {
+			$('#result').html(MESSAGES.repeated);
+		} else {
+			return form.superProcess();
 		}
-		function solutionToSend() {
-			var answer = $('#solution').val();
-			return {solution : answer};
-		}
-		var form = gnarus.attemptForm(solutionToSend, showResult, return_uri);
-		form.setup($('#try'),$('#skip'));
+	}
+	form.setup($('#try'),$('#skip'));
 }())
 </script>
