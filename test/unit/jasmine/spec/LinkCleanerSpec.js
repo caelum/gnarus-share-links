@@ -24,4 +24,14 @@ describe("LinkCleaner", function() {
     expect(cleaner.cleanWWW("www.caelum.com"))
       .toEqual("caelum.com");
   });
+
+  it("take out '/' from the end of link", function() {
+    var cleaner = new LinkCleaner();
+
+    expect(cleaner.cleanEndingBar("caelum.com/"))
+      .toEqual("caelum.com");
+
+    expect(cleaner.cleanEndingBar("http://www.caelum.com/"))
+      .toEqual("http://www.caelum.com");
+  });
 });
