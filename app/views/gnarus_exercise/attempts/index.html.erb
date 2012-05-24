@@ -37,13 +37,31 @@
 	form.originalProcess = form.process;
 	form.process = function() {
 		var link = $('#solution').val();
-		var isARepeatedLink = (fromServer.links.indexOf(link) !== -1);
-		if(isARepeatedLink) {
+		if(linkIsIncludedIn(fromServer.links,link)) {
 			$('#result').html(MESSAGES.repeated);
 		} else {
 			return form.originalProcess();
 		}
 	}
 	form.setup($('#try'),$('#skip'));
+
+	function linkIsIncludedIn(links,link) {
+		var cleaner = new LinkCleaner();
+		var link = cleaner.clean(link);
+		var links = cleanLinks(links);
+		var isIncluded = (links.indexOf(link) !== -1);
+		return isIncluded;
+	}
+
+	function cleanLinks(links) {
+		var cleaner = new LinkCleaner();
+		var cleanedLinks = []
+		for(var i = 0; i<links.length; i++) {
+			var link = links[i];
+			cleanedLinks.push(cleaner.clean(link));
+		}
+		return cleanedLinks;
+	}
+
 }())
 </script>
