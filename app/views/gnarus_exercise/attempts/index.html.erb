@@ -1,15 +1,17 @@
-<ol>
-<% @attempt.exercise.attempts.map{|a| a.executions}.flatten.each do |ex| %>
-	<li><a href="<%=ex.solution %>"><%= ex.solution %></a></li>
-<% end %>
-</ol>
-
+<h1>Indique um link relacionado ao assunto</h1>
 <div id="result"></div>
 <form id="exercise" method="POST" action="<%= exercise_attempt_executions_url(@attempt.exercise, @attempt)%>">
 	<input name="solution" id="solution" value="" />
 	<input type="button" id="try" value="Indicar">
 	<input type="button" id="skip" value="Ignorar e continuar">
 </form>
+
+<h1>Links que já foram indicados:</h1>
+<ul>
+<% @attempt.exercise.attempts.map{|a| a.executions}.flatten.each do |ex| %>
+	<li><a href="<%=ex.solution %>"><%= ex.solution %></a></li>
+<% end %>
+</ul>
 
 <script>
 
