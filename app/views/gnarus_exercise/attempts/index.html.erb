@@ -66,5 +66,9 @@
 		return cleanedLinks;
 	}
 
+	$("#exercise").submit(function(e){
+		e.preventDefault();
+		$(this).find("#try").click();
+	});
 }())
 </script>
